@@ -22,7 +22,15 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@entities": [
+          "src/domain/entities"
+      ],
+      "@ports": [
+          "src/domain/ports"
+      ]
+  }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
