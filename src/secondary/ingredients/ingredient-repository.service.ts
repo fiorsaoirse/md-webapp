@@ -22,8 +22,7 @@ export class IngredientRepositoryService implements IIngredientRepository {
             return of([]);
         }
 
-        const params = new HttpParams();
-        params.set('term', text);
+        const params = new HttpParams().set('term', text);
 
         const url = IngredientRepositoryService.buildUrl('search');
 

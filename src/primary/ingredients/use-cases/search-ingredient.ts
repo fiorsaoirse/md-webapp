@@ -4,7 +4,7 @@ import { Ingredient } from 'src/domain/entities/ingredient/Ingredient';
 import { IIngredientRepository } from 'src/domain/ports/ingredients/ingredient-repository';
 import { IngredientsRepository } from 'src/domain/ports/tokens';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class SearchIngredientUseCase {
     constructor(@Inject(IngredientsRepository) private readonly repository: IIngredientRepository) {
     }

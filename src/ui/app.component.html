@@ -1,9 +1,9 @@
-<section class="playground-row">
-    <div class="playground-col-33">
+<section class="flex-row">
+    <div class="flex-col-33">
         <md-combo-box
             mdRemovable
             label="Combo-box"
-            [content]="selectionTemplate"
+            [content]="optionTemplate"
             (searchInputChange)="search($event)"
             (selectionChange)="selected($event)"
         >
@@ -18,12 +18,6 @@
     </div>
 </section>
 
-<button md-button (click)="log()">Log</button>
-
-<ng-template #selectionTemplate let-value let-item="item">
-    <div>Id: {{ item.id }} Name: {{ item.name }}</div>
-</ng-template>
-
 <ng-template #optionTemplate let-item="item">
-    <div>Name: {{ item.name }}</div>
+    <div>{{ item.name }}</div>
 </ng-template>

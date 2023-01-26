@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, scan, startWith, Subject } from 'rxjs';
 import { Ingredient } from 'src/domain/entities/ingredient/Ingredient';
 import { Recipe } from 'src/domain/entities/recipe/Recipe';
 import { RecipeId } from 'src/domain/entities/recipe/types';
@@ -25,8 +25,13 @@ export class AppService {
 
         this.selectedIngredients$ = this.selectedIngredients$$.asObservable();
 
-        // TODO: scan
-        this.recipes$ = this.recipes$$.asObservable();
+        this.recipes$ = this.recipes$$.asObservable()
+            .pipe(
+                scan((acc, values) => {
+                    return acc.concat(values);
+                }),
+                startWith([])
+            );
     }
 
     addIngredient(item: Ingredient): void {
