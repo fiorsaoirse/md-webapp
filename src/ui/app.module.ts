@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MdBadgeComponent } from 'md-ui-kit/badge';
 import { MdButtonComponent } from 'md-ui-kit/button';
 import { MdComboBoxModule } from 'md-ui-kit/combo-box';
 import { MdCommonModule } from 'md-ui-kit/common';
@@ -10,6 +11,7 @@ import { IngredientRepositoryService } from 'src/secondary/ingredients/ingredien
 import { RecipeRepositoryService } from 'src/secondary/recipes/recipe-repository.service';
 
 import { AppComponent } from './app.component';
+import { MD_UI_PROVIDERS } from './app.md-ui.providers';
 
 @NgModule({
     declarations: [
@@ -19,13 +21,15 @@ import { AppComponent } from './app.component';
         BrowserModule,
         HttpClientModule,
         MdButtonComponent,
+        MdBadgeComponent,
         MdCommonModule,
-        MdComboBoxModule
+        MdComboBoxModule,
     ],
     providers: [
         { provide: IngredientsRepository, useClass: IngredientRepositoryService },
         { provide: RecipeRepository, useClass: RecipeRepositoryService },
-        { provide: ENVIRONMENT, useValue: { BASE_URL: 'http://localhost:3000' } }
+        { provide: ENVIRONMENT, useValue: { BASE_URL: 'http://localhost:3000' } },
+        ...MD_UI_PROVIDERS
     ],
     bootstrap: [AppComponent]
 })

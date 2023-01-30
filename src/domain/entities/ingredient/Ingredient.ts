@@ -17,4 +17,8 @@ export class Ingredient {
     public multiply(multiplier = 1): void {
 
     }
+
+    public toString(): string {
+        return this.name;
+    }
 }

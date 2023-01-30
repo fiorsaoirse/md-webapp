@@ -1,23 +1,38 @@
+Value: {{ selectedIngredient }}
+
 <section class="flex-row">
-    <div class="flex-col-33">
+    <div class="flex-col-50">
         <md-combo-box
             mdRemovable
-            label="Combo-box"
+            label="Look for an ingredient"
+            [(ngModel)]="selectedIngredient"
             [content]="optionTemplate"
-            (searchInputChange)="search($event)"
-            (selectionChange)="selected($event)"
+            (searchInputChange)="searchIngredient($event)"
+            (selectionChange)="addIngredient($event)"
         >
             <ng-container *ngFor="let item of ingredients$ | async">
                 <md-combo-box-option
                     [content]="optionTemplate"
-                    [value]="item.id"
-                    [item]="item"
+                    [value]="item"
                 ></md-combo-box-option>
             </ng-container>
         </md-combo-box>
     </div>
 </section>
 
-<ng-template #optionTemplate let-item="item">
+<ng-template #optionTemplate let-item>
     <div>{{ item.name }}</div>
 </ng-template>
+
+<ng-container *ngIf="(selectedIngredients$ | async) as selectedIngredients">
+    <section *ngIf="selectedIngredients.length" class="flex-row flex-gap" mdRemovable mdSize="large">
+        <md-badge *ngFor="let item of selectedIngredients" (remove)="deleteIngredient(item)">
+            {{ item.name }}
+        </md-badge>
+    </section>
+</ng-container>
+
+
+<section class="flex-row">
+    <button md-button (click)="searchRecipes()">Search!</button>
+</section>

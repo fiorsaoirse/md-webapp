@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { isNil } from 'md-ui-kit/utils';
+import { MdSelectionEvent } from 'md-ui-kit/combo-box';
 import { Observable } from 'rxjs';
 import { Ingredient } from 'src/domain/entities/ingredient/Ingredient';
 import { Recipe } from 'src/domain/entities/recipe/Recipe';
@@ -17,27 +17,31 @@ export class AppComponent {
     selectedIngredients$: Observable<ReadonlyArray<Ingredient>>;
     recipes$: Observable<ReadonlyArray<Recipe>>;
 
+    selectedIngredient: Ingredient | null;
+
     constructor(private readonly appService: AppService) {
         this.selectedIngredients$ = this.appService.selectedIngredients$;
         this.recipes$ = this.appService.recipes$;
 
         this.ingredients$ = this.appService.searchIngredient('');
+
+        this.selectedIngredient = null;
     }
 
-
-    log(): void {
-
+    searchIngredient(term: string | null): void {
+        this.ingredients$ = this.appService.searchIngredient(term ?? '');
     }
 
-    search(term: string | null): void {
-        console.log(term);
-
-        if (isNil(term)) {
-            return;
-        }
-
-        this.ingredients$ = this.appService.searchIngredient(term);
+    addIngredient(event: MdSelectionEvent<Ingredient, any>): void {
+        this.selectedIngredient = null;
+        this.appService.addIngredient(event.value!);
     }
 
-    selected(a: any): void { }
+    deleteIngredient(item: Ingredient): void {
+        this.appService.deleteIngredient(item);
+    }
+
+    searchRecipes(): void {
+
+    }
 }
