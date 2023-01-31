@@ -46,8 +46,13 @@ export class AppService {
             this.search$$.pipe(
                 withLatestFrom(this.selectedIngredients$),
                 switchMap(([, items]) => {
+                    console.log('response ', items);
                     this.pages.current += 1;
                     return this.searchRecipesUseCase.searchRecipes(items, this.pages.current);
+                }),
+                map(response => {
+                    this.pages.total = response.total;
+                    return response.items;
                 }),
                 map(add)
             ),
@@ -92,7 +97,7 @@ export class AppService {
             return;
         }
 
-
+        this.search$$.next();
     }
 
     loadRecipe(id: RecipeId): Observable<Recipe> {

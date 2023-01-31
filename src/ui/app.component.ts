@@ -11,7 +11,7 @@ import { AppService } from './app.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'mdw';
+    title = 'Magic Dinner';
 
     ingredients$: Observable<ReadonlyArray<Ingredient>>;
     selectedIngredients$: Observable<ReadonlyArray<Ingredient>>;
@@ -42,6 +42,6 @@ export class AppComponent {
     }
 
     searchRecipes(): void {
-
+        this.appService.searchRecipes();
     }
 }
