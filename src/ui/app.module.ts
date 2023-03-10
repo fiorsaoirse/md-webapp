@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdBadgeComponent } from 'md-ui-kit/badge';
 import { MdButtonComponent } from 'md-ui-kit/button';
+import { MdCardComponent } from 'md-ui-kit/card';
 import { MdComboBoxModule } from 'md-ui-kit/combo-box';
 import { MdCommonModule } from 'md-ui-kit/common';
+import { MdLazyObservedDirective } from 'md-ui-kit/lazy-observed';
 import { IngredientsRepository, RecipeRepository } from 'src/domain/ports/tokens';
 import { ENVIRONMENT } from 'src/secondary/common/environment';
 import { IngredientRepositoryService } from 'src/secondary/ingredients/ingredient-repository.service';
@@ -22,8 +24,10 @@ import { MD_UI_PROVIDERS } from './app.md-ui.providers';
         HttpClientModule,
         MdButtonComponent,
         MdBadgeComponent,
+        MdCardComponent,
         MdCommonModule,
         MdComboBoxModule,
+        MdLazyObservedDirective
     ],
     providers: [
         { provide: IngredientsRepository, useClass: IngredientRepositoryService },

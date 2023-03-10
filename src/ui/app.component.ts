@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MdSelectionEvent } from 'md-ui-kit/combo-box';
+import { MdContext } from 'md-ui-kit/common';
 import { Observable } from 'rxjs';
 import { Ingredient } from 'src/domain/entities/ingredient/Ingredient';
 import { Recipe } from 'src/domain/entities/recipe/Recipe';
@@ -26,6 +27,10 @@ export class AppComponent {
         this.ingredients$ = this.appService.searchIngredient('');
 
         this.selectedIngredient = null;
+    }
+
+    context(item: Recipe): MdContext {
+        return new MdContext(item.image);
     }
 
     searchIngredient(term: string | null): void {

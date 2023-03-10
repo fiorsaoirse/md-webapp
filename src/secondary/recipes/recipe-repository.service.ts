@@ -19,13 +19,9 @@ export class RecipeRepositoryService implements IRecipeRepository {
 
     constructor(private readonly httpService: HttpService) { }
 
-    searchByIngredients(ingredients: readonly number[], page: number): Observable<IRecipeResponse> {
+    searchByIngredients(ids: readonly number[], page: number): Observable<IRecipeResponse> {
         const url = RecipeRepositoryService.buildUrl();
-        const body: IApiRecipesRequest = {
-            includedIngredients: ingredients,
-            Sorting: 'relevance',
-            page
-        };
+        const body: IApiRecipesRequest = { ids, page };
 
         return this.httpService.post<IApiRecipesResponse, IApiRecipesRequest>(url, body)
             .pipe(
@@ -38,9 +34,7 @@ export class RecipeRepositoryService implements IRecipeRepository {
             );
     }
 
-    loadById(id: number): Observable<Recipe> {
-        const url = RecipeRepositoryService.buildUrl(id.toString());
-
+    load(url: string): Observable<Recipe> {
         return this.httpService.get<IApiRecipe>(url)
             .pipe(
                 map(details => this.toDetails(details))
@@ -56,9 +50,9 @@ export class RecipeRepositoryService implements IRecipeRepository {
 
     private toDetails(from: IApiRecipe): Recipe {
         const props: IRecipeProperties = {
-            id: from.id,
-            name: from.name,
+            name: from.title,
             url: from.url,
+            image: from.image,
             steps: from.steps,
             portions: from.portions,
             ingredients: from.ingredients?.map(ingredient => this.toIngredientDetails(ingredient)),

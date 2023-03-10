@@ -1,6 +1,7 @@
 <section class="flex-row">
     <div class="flex-col-50">
         <md-combo-box
+            #comboBox
             mdRemovable
             label="Look for an ingredient"
             [(ngModel)]="selectedIngredient"
@@ -33,3 +34,29 @@
 <section class="flex-row">
     <button md-button (click)="searchRecipes()">Search!</button>
 </section>
+
+<ng-container *ngIf="(recipes$ | async) as recipes">
+    <section class="flex-row flex-wrap flex-gap">
+        <ng-container
+        *ngFor="let item of recipes; let last = last;"
+    >
+        <ng-container *ngIf="last">
+            <div mdLazyObserved (reached)="searchRecipes()"></div>
+        </ng-container>
+
+        <md-card
+            [content]="cardBody"
+            [context]="context(item)"
+            basis="calc(33% - 10px)"
+        >
+            <div class="md-card-title">{{ item.title }}</div>
+        </md-card>
+    </ng-container>
+    </section>
+</ng-container>
+
+<ng-template #cardBody let-recipe>
+    <div>
+        <img class="recipe-image" [src]="recipe" />
+    </div>
+</ng-template>

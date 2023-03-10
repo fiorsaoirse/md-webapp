@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, merge, Observable, scan, Subject, switchMap, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, catchError, map, merge, Observable, of, scan, Subject, switchMap, withLatestFrom } from 'rxjs';
 import { Ingredient } from 'src/domain/entities/ingredient/Ingredient';
 import { Recipe } from 'src/domain/entities/recipe/Recipe';
-import { RecipeId } from 'src/domain/entities/recipe/types';
+import { IRecipeResponse } from 'src/domain/ports/recipes/recipe-repository';
 import { SearchIngredientUseCase } from 'src/primary/ingredients/use-cases/search-ingredient';
 import { LoadRecipeUseCase } from 'src/primary/recipes/use-cases/load-recipe';
 import { SearchRecipesUseCase } from 'src/primary/recipes/use-cases/search-repice';
@@ -46,11 +46,19 @@ export class AppService {
             this.search$$.pipe(
                 withLatestFrom(this.selectedIngredients$),
                 switchMap(([, items]) => {
-                    console.log('response ', items);
+                    console.log('items ', items);
                     this.pages.current += 1;
-                    return this.searchRecipesUseCase.searchRecipes(items, this.pages.current);
+                    return this.searchRecipesUseCase.searchRecipes(items, this.pages.current)
+                        .pipe(
+                            catchError(() => {
+                                this.pages.current -= 1;
+                                return of(<IRecipeResponse>{ items: [], total: null });
+                            })
+                        );
                 }),
                 map(response => {
+                    console.log('response ', response);
+
                     this.pages.total = response.total;
                     return response.items;
                 }),
@@ -100,8 +108,8 @@ export class AppService {
         this.search$$.next();
     }
 
-    loadRecipe(id: RecipeId): Observable<Recipe> {
-        return this.loadRecipeUseCase.load(id);
+    loadRecipe(url: string): Observable<Recipe> {
+        return this.loadRecipeUseCase.load(url);
     }
 
     private resetPages(): void {
